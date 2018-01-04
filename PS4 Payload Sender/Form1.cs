@@ -12,26 +12,6 @@ namespace PS4_Payload_Sender
             InitializeComponent();
         }
 
-        private void button1_Click(object sender, EventArgs e)
-        {
-            if (textBox1.Text == "")
-            {
-                MessageBox.Show("Please enter an IP address.");
-            }
-            else
-            {
-                bool result = Connect2PS4(textBox1.Text, textBox2.Text);
-                if (!result)
-                {
-                    MessageBox.Show("Error while connecting.\n" + Exception);
-                }
-                else
-                {
-                    groupBox1.Enabled = false;
-                    groupBox2.Enabled = true;
-                }
-            }
-        }
 
         public static Socket _psocket;
         public static bool pDConnected;
@@ -67,12 +47,6 @@ namespace PS4_Payload_Sender
             _psocket.Close();
         }
 
-        private void Form1_Load(object sender, EventArgs e)
-        {
-            groupBox2.Enabled = false;
-            groupBox3.Enabled = false;
-        }
-
         public static string path;
 
         private void button2_Click(object sender, EventArgs e)
@@ -80,28 +54,31 @@ namespace PS4_Payload_Sender
             openFileDialog1.ShowDialog();
             path = openFileDialog1.FileName;
             button2.Text = path;
-            groupBox2.Enabled = false;
-            groupBox3.Enabled = true;
         }
 
         private void button3_Click(object sender, EventArgs e)
         {
+            if (textBox1.Text == "")
+            {
+                MessageBox.Show("Please enter an IP address.");
+            }
+            else
+            {
+                bool result = Connect2PS4(textBox1.Text, textBox2.Text);
+                if (!result)
+                {
+                    MessageBox.Show("Error while connecting.\n" + Exception);
+                }
+            }
             try
             {
                 SendPayload(path);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Error while sending payload!\n" + ex);
-            }
-            try
-            {
                 DisconnectPayload();
                 MessageBox.Show("Payload sent!");
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error while disconnecting!\n" + ex);
+                MessageBox.Show("Error while sending payload!\n" + ex);
             }
         }
 
@@ -109,5 +86,7 @@ namespace PS4_Payload_Sender
         {
             System.Diagnostics.Process.Start("http://customprotocol.com");
         }
+
+
     }
 }
